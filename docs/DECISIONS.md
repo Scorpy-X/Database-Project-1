@@ -118,3 +118,17 @@ The generator deliberately creates known seed accounts and writes their plaintex
 
 **Trade-off / limitation**  
 This file is only acceptable because the accounts are synthetic and local-demo-only. It would not be acceptable for real user credentials.
+
+## Query-Driven Indexes
+
+**Decision**
+The schema keeps indexes that match the application's actual route and report access patterns.
+
+**Why**
+Indexes are most useful when they support how the system really reads data: course rosters, course content loading, forum thread retrieval, calendar event lookup, assignment submissions, and report aggregation. Composite indexes are used where queries filter and sort through multiple columns together.
+
+**What it means in the codebase**
+`database/schema.sql` avoids explicit duplicates of primary keys, unique keys, and obvious foreign-key support indexes. For example, `Enrol(userID)` is not indexed separately because `PRIMARY KEY (userID, courseCode)` already starts with `userID`. `Teaches(courseCode)` is not indexed separately because `UNIQUE (courseCode)` already provides that lookup.
+
+**Trade-off / limitation**
+The index set is intentionally practical, not exhaustive. `EXPLAIN` should be used when adding new high-volume routes or reports to confirm MySQL is selecting useful indexes and not falling back to large table scans.
