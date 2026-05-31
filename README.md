@@ -9,35 +9,35 @@ The project uses Flask, MySQL, deterministic seed data, Basic Auth for protected
 From the project root:
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File .\setup.ps1
+powershell -ExecutionPolicy Bypass -File .\scripts\setup.ps1
 ```
 
-Create `.env` from `.env.example` and set your local MySQL credentials.
+Create `backend/.env` from `backend/.env.example` and set your local MySQL credentials.
 
 Regenerate seed data when needed:
 
 ```powershell
-.\.venv\Scripts\python.exe gen_vle.py
+.\.venv\Scripts\python.exe database\generate_seed_data.py
 ```
 
 Rebuild the database:
 
 ```powershell
-mysql -u root -p < vle.sql
-mysql -u root -p Vle < vle_inserts.sql
-mysql -u root -p Vle < reports.sql
+mysql -u root -p < database\schema.sql
+mysql -u root -p Vle < database\generated_seed.sql
+mysql -u root -p Vle < database\report_views.sql
 ```
 
 Run the API:
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File .\start_backend.ps1
+powershell -ExecutionPolicy Bypass -File .\scripts\start_backend.ps1
 ```
 
 Run the React frontend in a second terminal:
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File .\start_frontend.ps1
+powershell -ExecutionPolicy Bypass -File .\scripts\start_frontend.ps1
 ```
 
 Or run the frontend manually:
@@ -61,11 +61,14 @@ The frontend reads its API base URL from `VITE_API_BASE_URL`. Copy `frontend/.en
 
 This repo is a Flask + MySQL coursework API for a simple Virtual Learning Environment.
 
-- `app.py` contains the API routes and shared helpers.
+- `backend/app.py` contains the API routes and shared helpers.
+- `backend/` contains the Flask API, backend dependencies, and backend tests.
 - `frontend/` contains the bonus React + Vite web application.
-- `vle.sql` defines the main schema.
-- `reports.sql` defines the report views.
-- `gen_vle.py` regenerates deterministic seed data into `vle_inserts.sql`.
+- `database/schema.sql` defines the main schema.
+- `database/report_views.sql` defines the report views.
+- `database/generate_seed_data.py` regenerates deterministic seed data into `database/generated_seed.sql`.
+- `database/generated_seed.sql` is committed for easy local demo rebuilds even though it is generated.
+- `scripts/` contains setup and start helpers.
 - `postman/` contains the full local workflow collection and environment.
 
 ## Key Design Choices
@@ -89,4 +92,4 @@ Import these files into Postman:
 - `postman/VLE API Full Workflow.postman_collection.json`
 - `postman/VLE Local.postman_environment.json`
 
-Use `demo_credentials.txt` for the seed student, lecturer, and admin credentials.
+Use `docs/demo_credentials.txt` for the seed student, lecturer, and admin credentials.

@@ -30,7 +30,7 @@ Protected routes currently use Basic Auth instead of JWT.
 For local development and Postman testing, Basic Auth is faster to wire up, easier for teammates to understand, and easier to demo repeatedly without managing token issuance, expiry, and refresh behavior.
 
 **What it means in the codebase**  
-`app.py` authenticates protected requests directly from `request.authorization`. The public `POST /auth/login` route remains useful as a demo credential check, but the rest of the protected API does not depend on issued tokens.
+`backend/app.py` authenticates protected requests directly from `request.authorization`. The public `POST /auth/login` route remains useful as a demo credential check, but the rest of the protected API does not depend on issued tokens.
 
 **Trade-off / limitation**  
 This is a coursework/demo convenience choice, not a stronger long-term auth design. JWT is still deferred rather than fully replaced.
@@ -38,13 +38,13 @@ This is a coursework/demo convenience choice, not a stronger long-term auth desi
 ## Single-File API Layout
 
 **Decision**  
-The Flask API remains in a single `app.py` file.
+The Flask API remains in a single `backend/app.py` file.
 
 **Why**  
 The current priority is teammate handoff clarity and low setup friction. For a student project, one well-structured file with section headings and helper grouping is easier to trace than a multi-module refactor done late in the project.
 
 **What it means in the codebase**  
-Helpers and routes are grouped by responsibility inside `app.py`, but they are intentionally still in one place.
+Helpers and routes are grouped by responsibility inside `backend/app.py`, but they are intentionally still in one place.
 
 **Trade-off / limitation**  
 This is easier to follow right now, but it would become less comfortable if the system keeps growing. A later production-style cleanup could split the API into Blueprints or modules.
@@ -94,13 +94,13 @@ There is no real file upload, download, MIME handling, or storage backend in thi
 ## Deterministic Seed Generation
 
 **Decision**  
-Seed data is generated deterministically by `gen_vle.py`.
+Seed data is generated deterministically by `database/generate_seed_data.py`.
 
 **Why**  
 Teammates need a rebuild path that is predictable. Deterministic generation makes debugging, Postman testing, demo handoff, and report verification much easier.
 
 **What it means in the codebase**  
-`random.seed(42)` and `Faker.seed(42)` are used so the same dataset structure is produced each time. The generator validates coursework constraints before writing `vle_inserts.sql`.
+`random.seed(42)` and `Faker.seed(42)` are used so the same dataset structure is produced each time. The generator validates coursework constraints before writing `database/generated_seed.sql`.
 
 **Trade-off / limitation**  
 The data is synthetic and predictable by design. That is useful for coursework demos, but it is not meant to model production randomness or privacy concerns.
@@ -108,13 +108,13 @@ The data is synthetic and predictable by design. That is useful for coursework d
 ## Demo Credentials Are Synthetic And Deliberate
 
 **Decision**  
-The project keeps one known student, lecturer, and admin credential set in `demo_credentials.txt`.
+The project keeps one known student, lecturer, and admin credential set in `docs/demo_credentials.txt`.
 
 **Why**  
 This removes friction during handoff, Postman testing, and live demos. Teammates do not have to inspect the generated SQL to discover workable accounts.
 
 **What it means in the codebase**  
-The generator deliberately creates known seed accounts and writes their plaintext demo credentials to `demo_credentials.txt`. Runtime-created accounts still return their plaintext password only once.
+The generator deliberately creates known seed accounts and writes their plaintext demo credentials to `docs/demo_credentials.txt`. Runtime-created accounts still return their plaintext password only once.
 
 **Trade-off / limitation**  
 This file is only acceptable because the accounts are synthetic and local-demo-only. It would not be acceptable for real user credentials.

@@ -1,8 +1,8 @@
-import React from "react";
+﻿import React from "react";
 import { getStoredUser, logout } from "@/api";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+
 import { Separator } from "@/components/ui/separator";
 import { LogOut, User, Mail, Hash, Shield } from "lucide-react";
 

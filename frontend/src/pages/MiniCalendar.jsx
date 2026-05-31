@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+﻿import React, { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { getCalendarColor } from "@/lib/calendarColors";
 
 const DAYS_SHORT = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
-const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+
 
 function sameDay(a, b) {
   return a.getFullYear()===b.getFullYear() && a.getMonth()===b.getMonth() && a.getDate()===b.getDate();
@@ -94,3 +94,4 @@ export default function MiniCalendar({ events = [], onDayClick }) {
     </div>
   );
 }
+

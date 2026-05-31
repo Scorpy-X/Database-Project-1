@@ -1,9 +1,0 @@
-Flask
-flask-cors
-python-dotenv
-mysql-connector-python
-Flask-HTTPAuth
-flask-jwt-extended
-Flask-Login
-Faker
-redis

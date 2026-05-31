@@ -1,16 +1,21 @@
-# React + Vite
+# VLE Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React + Vite frontend for the COMP3161 VLE project.
 
-Currently, two official plugins are available:
+## Local Run
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+From the repository root, use the helper script:
 
-## React Compiler
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\start_frontend.ps1
+```
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Or run manually:
 
-## Expanding the ESLint configuration
+```powershell
+cd frontend
+npm.cmd install
+npm.cmd run dev
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+The frontend reads the backend URL from `VITE_API_BASE_URL`. Copy `.env.example` to `.env` if the Flask API is not running at `http://127.0.0.1:5000`.

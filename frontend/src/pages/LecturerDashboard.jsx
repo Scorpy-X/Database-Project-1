@@ -1,30 +1,12 @@
-// export default function LecturerDashboard() {
-//   return (
-//     <div className="flex min-h-screen items-center justify-center bg-slate-100">
-//       <div className="rounded-2xl bg-white p-10 shadow-lg">
-//         <h1 className="text-3xl font-bold text-purple-600">
-//           Lecturer Dashboard
-//         </h1>
-
-//         <p className="mt-3 text-slate-600">
-//           Welcome Lecturer 👋
-//         </p>
-//       </div>
-//     </div>
-//   );
-// }
-
-// 3am
-
-import React, { useState, useEffect } from "react";
+﻿import React, { useState, useEffect } from "react";
 import {
-  BookOpen, Plus, ChevronDown, ChevronRight, ArrowLeft, Send,
+  BookOpen, Plus, ChevronDown, ChevronRight, ArrowLeft,
   File, Presentation, Link2, FileEdit, Calendar as CalIcon,
-  Users, GraduationCap, User, CheckCircle, Clock
+  GraduationCap, User
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Separator } from "@/components/ui/separator";
@@ -46,7 +28,7 @@ const itemIcons = {
   assignment: <FileEdit size={15} className="text-orange-500"/>,
 };
 
-// ── Course Manager (detail view for a lecturer's course) ─────────────────────
+// â”€â”€ Course Manager (detail view for a lecturer's course) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function CourseManager({ course, onBack }) {
   const [tab, setTab] = useState("Content");
   const [content, setContent] = useState([]);
@@ -81,7 +63,7 @@ function CourseManager({ course, onBack }) {
 
   // Forum form
   const [forumName, setForumName] = useState("");
-  const [addingForum, setAddingForum] = useState(false);
+
   const [forums, setForums] = useState([]);
   const [selectedForum, setSelectedForum] = useState(null);
 
@@ -149,7 +131,7 @@ function CourseManager({ course, onBack }) {
 
   const handleGrade = async (subID, secItemID) => {
     const g = parseInt(gradeInputs[subID]);
-    if (isNaN(g) || g < 0 || g > 100) { setGradingMsg("Grade must be 0–100"); return; }
+    if (isNaN(g) || g < 0 || g > 100) { setGradingMsg("Grade must be 0â€“100"); return; }
     const r = await gradeSubmission(subID, g);
     setGradingMsg(r.status === 200 ? "Graded!" : r.error || "Error");
     if (r.status === 200 && secItemID) loadSubmissions(secItemID);
@@ -192,7 +174,7 @@ function CourseManager({ course, onBack }) {
         </div>
       </div>
 
-      {/* ── CONTENT TAB ── */}
+      {/* â”€â”€ CONTENT TAB â”€â”€ */}
       {tab === "Content" && (
         <div className="flex flex-col gap-4">
           {/* Add section */}
@@ -313,7 +295,7 @@ function CourseManager({ course, onBack }) {
         </div>
       )}
 
-      {/* ── MEMBERS TAB ── */}
+      {/* â”€â”€ MEMBERS TAB â”€â”€ */}
       {tab === "Members" && (
         <div className="flex flex-col gap-3">
           <div className="flex items-center justify-between">
@@ -345,7 +327,7 @@ function CourseManager({ course, onBack }) {
         </div>
       )}
 
-      {/* ── CALENDAR TAB ── */}
+      {/* â”€â”€ CALENDAR TAB â”€â”€ */}
       {tab === "Calendar" && (
         <div className="flex flex-col gap-4">
           <h2 className="text-[15px] font-extrabold text-slate-900">Course Calendar</h2>
@@ -377,7 +359,7 @@ function CourseManager({ course, onBack }) {
         </div>
       )}
 
-      {/* ── FORUMS TAB ── */}
+      {/* â”€â”€ FORUMS TAB â”€â”€ */}
       {tab === "Forums" && (
         selectedForum
           ? <ForumSection courseCode={course.courseCode}/>
@@ -407,7 +389,7 @@ function CourseManager({ course, onBack }) {
   );
 }
 
-// ── Main Lecturer Dashboard ───────────────────────────────────────────────────
+// â”€â”€ Main Lecturer Dashboard â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export default function LecturerDashboard() {
   const [activeTab, setActiveTab] = useState("My Courses");
   const [selectedCourse, setSelectedCourse] = useState(null);
@@ -489,3 +471,7 @@ export default function LecturerDashboard() {
     </div>
   );
 }
+
+
+
+
