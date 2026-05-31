@@ -17,7 +17,16 @@ The API is currently kept in one file, `backend/app.py`, for simple group handof
 
 ## Setup
 
-Create the virtual environment and install dependencies:
+For Windows demos, use the root batch files first:
+
+```powershell
+setup.bat
+start_dev.bat
+```
+
+`setup.bat` creates `.venv`, installs backend dependencies, installs frontend dependencies, and creates local `.env` files when examples are available. `start_dev.bat` opens the Flask backend and Vite frontend in separate terminal windows.
+
+If you prefer the PowerShell helper directly, run:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\scripts\setup.ps1
@@ -46,10 +55,10 @@ mysql -u root -p Vle < database\generated_seed.sql
 mysql -u root -p Vle < database\report_views.sql
 ```
 
-Run Flask:
+Run Flask manually:
 
 ```powershell
-.\.venv\Scripts\python.exe backend\app.py
+.\.venv\Scripts\python.exe -m flask --app backend.app run --host 127.0.0.1 --port 5000 --no-reload
 ```
 
 The default local API base URL is:

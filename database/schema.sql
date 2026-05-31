@@ -165,46 +165,46 @@ SELECT
 FROM Teaches;
 
 
--- INDEXES 
+-- Query-driven indexes.
+-- These support the application's common route/report access patterns while
+-- avoiding explicit duplicates of primary keys and unique constraints.
 
--- UserAccount: Filter by access level )
-CREATE INDEX idx_user_accesslvl ON UserAccount(accessLvl);
+-- Course roster and enrollment report lookups by course.
+CREATE INDEX idx_enrol_coursecode
+ON Enrol(courseCode);
 
--- DiscussionForum: Get forums by course
-CREATE INDEX idx_discussionforum_coursecode ON DiscussionForum(courseCode);
+-- Role-filtered user reports that then join by userID.
+CREATE INDEX idx_useraccount_accesslvl_userid
+ON UserAccount(accessLvl, userID);
 
--- DiscussionThread: Get top-level threads (dfID + parentpostID IS NULL queries)
-CREATE INDEX idx_discussionthread_df_parent ON DiscussionThread(dfID, parentpostID);
+-- Course content loading by course, ordered by section.
+CREATE INDEX idx_coursesection_coursecode_secid
+ON CourseSection(courseCode, secID);
 
--- DiscussionThread: Get replies to a specific post
-CREATE INDEX idx_discussionthread_parentpost ON DiscussionThread(parentpostID);
+-- Section item loading by section, ordered by item.
+CREATE INDEX idx_sectionitems_secid_secitemid
+ON SectionItems(secID, secItemID);
 
--- DiscussionThread: Get posts by user
-CREATE INDEX idx_discussionthread_user ON DiscussionThread(userID);
+-- Forum list loading by course.
+CREATE INDEX idx_discussionforum_coursecode
+ON DiscussionForum(courseCode);
 
--- DiscussionThread: Sort by date
-CREATE INDEX idx_discussionthread_date ON DiscussionThread(date_created);
+-- Top-level forum threads by forum, ordered by date/thread id.
+CREATE INDEX idx_discussionthread_forum_threads
+ON DiscussionThread(dfID, parentpostID, date_created, dtID);
 
--- CourseSection: Get sections by course
-CREATE INDEX idx_coursesection_coursecode ON CourseSection(courseCode);
+-- Reply lookup and reply counting for discussion threads.
+CREATE INDEX idx_discussionthread_parent_forum
+ON DiscussionThread(parentpostID, dfID);
 
--- SectionItems: Get items by section
-CREATE INDEX idx_sectionitems_secid ON SectionItems(secID);
+-- Calendar event loading by calendar, ordered by date/event id.
+CREATE INDEX idx_calendarevents_calendar_date_event
+ON CalendarEvents(calendarID, eventDate, eventID);
 
--- CalendarEvents: Get events by calendar
-CREATE INDEX idx_calendarevents_calendarid ON CalendarEvents(calendarID);
+-- Calendar events linked back to course section items.
+CREATE INDEX idx_calendarevents_secitem
+ON CalendarEvents(secItemID);
 
--- CalendarEvents: Filter events by date
-CREATE INDEX idx_calendarevents_date ON CalendarEvents(eventDate);
-
--- CalendarEvents: Link events to section items
-CREATE INDEX idx_calendarevents_secitem ON CalendarEvents(secItemID);
-
-
--- TO SPEED UP THE REPORT VIEWS 
-CREATE INDEX idx_enrol_coursecode ON Enrol(courseCode);
-CREATE INDEX idx_enrol_userid ON Enrol(userID);
-CREATE INDEX idx_teaches_userid ON Teaches(userID);
-
-CREATE INDEX idx_enrol_userid_grade ON Enrol(userID, grade);
-CREATE INDEX idx_useraccount_accesslvl_userid ON UserAccount(accessLvl, userID);
+-- Assignment submissions by item, ordered newest first.
+CREATE INDEX idx_submission_item_date
+ON Submission(secItemID, submDate, subID);

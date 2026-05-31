@@ -4,7 +4,13 @@ React + Vite frontend for the COMP3161 VLE project.
 
 ## Local Run
 
-From the repository root, use the helper script:
+From the repository root, use the double-click batch file:
+
+```powershell
+start_frontend.bat
+```
+
+Or use the PowerShell helper:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\scripts\start_frontend.ps1
