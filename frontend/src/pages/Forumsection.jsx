@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { MessageSquare, Send, ArrowLeft, MessageCircle, CornerDownRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -59,7 +59,7 @@ export default function ForumSection({ courseCode }) {
 
   if (loading) return <div className="flex flex-col gap-2"><Skeleton className="h-16 w-full rounded-xl"/><Skeleton className="h-16 w-full rounded-xl"/></div>;
 
-  // View A â€” Forum list
+  // View A - Forum list
   if (!selectedForum) return (
     <div className="flex flex-col gap-3">
       <h2 className="text-[15px] font-extrabold text-slate-900">Course Boards</h2>
@@ -77,7 +77,7 @@ export default function ForumSection({ courseCode }) {
     </div>
   );
 
-  // View B â€” Thread list
+  // View B - Thread list
   if (!selectedThread) return (
     <div className="flex flex-col gap-4">
       <Button variant="ghost" size="sm" onClick={()=>setSelectedForum(null)} className="w-fit gap-1 text-indigo-600">
@@ -120,7 +120,7 @@ export default function ForumSection({ courseCode }) {
     </div>
   );
 
-  // View C â€” Thread detail + replies
+  // View C - Thread detail + replies
   return (
     <div className="flex flex-col gap-4">
       <Button variant="ghost" size="sm" onClick={()=>setSelectedThread(null)} className="w-fit gap-1 text-indigo-600">

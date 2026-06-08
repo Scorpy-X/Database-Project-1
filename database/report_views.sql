@@ -31,11 +31,11 @@ HAVING COUNT(t.courseCode) >= 3;
 
 -- The 10 most enrolled courses.(Jada-Marie)
 CREATE VIEW ten_most_enrolled AS
-SELECT c.courseCode, c.CourseName, c.department, COUNT(e.userID) AS totalStudents
+SELECT c.courseCode, c.CourseName AS courseName, c.department, COUNT(e.userID) AS enrollment_count
 FROM Course c
 JOIN Enrol e ON c.courseCode = e.courseCode
 GROUP BY c.courseCode, c.courseName
-ORDER BY totalStudents DESC
+ORDER BY enrollment_count DESC
 LIMIT 10;
 
 -- The top 10 students with the highest course-grade averages.(Jada-Marie)

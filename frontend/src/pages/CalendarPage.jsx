@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight, Plus, Check } from "lucide-react";
 
 import { getStoredUser, getStudentCalendarEvents, getStudentCourses } from "@/api";
@@ -7,7 +7,7 @@ import { getCalendarColor } from "@/lib/calendarColors";
 const DAYS_FULL  = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 const DAYS_SHORT = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 const MONTHS     = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-const HOURS      = Array.from({ length: 13 }, (_, i) => i + 8); // 8am â€“ 8pm
+const HOURS      = Array.from({ length: 13 }, (_, i) => i + 8); // 8am - 8pm
 
 function sameDay(a, b) {
   return a.getFullYear()===b.getFullYear() && a.getMonth()===b.getMonth() && a.getDate()===b.getDate();
@@ -19,7 +19,7 @@ function weekStart(date) {
   return d;
 }
 
-// â”€â”€ Left sidebar mini-calendar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// -- Left sidebar mini-calendar -------------------------------------------------
 function SidebarMiniCal({ cursor, onNav, onDayClick, events }) {
   const today = new Date();
   const year  = cursor.getFullYear();
@@ -89,7 +89,7 @@ function SidebarMiniCal({ cursor, onNav, onDayClick, events }) {
   );
 }
 
-// â”€â”€ My Calendars list â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// -- My Calendars list ----------------------------------------------------------
 function MyCalendars({ courses, enabled, onToggle }) {
   return (
     <div className="mt-5">
@@ -118,7 +118,7 @@ function MyCalendars({ courses, enabled, onToggle }) {
   );
 }
 
-// â”€â”€ MONTH VIEW â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// -- MONTH VIEW -----------------------------------------------------------------
 function MonthView({ cursor, events, enabled, onDayClick }) {
   const year     = cursor.getFullYear();
   const month    = cursor.getMonth();
@@ -189,7 +189,7 @@ function MonthView({ cursor, events, enabled, onDayClick }) {
   );
 }
 
-// â”€â”€ WEEK VIEW â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// -- WEEK VIEW ------------------------------------------------------------------
 function WeekView({ cursor, events, enabled }) {
   const ws = weekStart(cursor);
   const days = Array.from({ length: 7 }, (_, i) => {
@@ -254,7 +254,7 @@ function WeekView({ cursor, events, enabled }) {
   );
 }
 
-// â”€â”€ DAY VIEW â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// -- DAY VIEW -------------------------------------------------------------------
 function DayView({ cursor, events, enabled }) {
   const today = new Date();
   const dayEvents = events.filter(e =>
@@ -306,7 +306,7 @@ function DayView({ cursor, events, enabled }) {
   );
 }
 
-// â”€â”€ MAIN CALENDAR PAGE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// -- MAIN CALENDAR PAGE ---------------------------------------------------------
 export default function CalendarPage() {
   const user    = getStoredUser();
   const userID  = user?.userID;
@@ -369,7 +369,7 @@ export default function CalendarPage() {
   return (
     <div className="flex h-full min-h-screen bg-white font-sans">
 
-      {/* â”€â”€ Left sidebar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+      {/* -- Left sidebar ------------------------------------------------ */}
       <div className="flex w-[192px] shrink-0 flex-col gap-4 border-r border-slate-200 bg-white px-4 py-5">
         {/* New Event button */}
         <button className="flex items-center gap-2 rounded-full bg-indigo-600 px-4 py-2 text-[12px] font-bold text-white shadow hover:bg-indigo-700 transition-colors">
@@ -388,7 +388,7 @@ export default function CalendarPage() {
         <MyCalendars courses={courses} enabled={enabled} onToggle={toggleCourse}/>
       </div>
 
-      {/* â”€â”€ Main area â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+      {/* -- Main area --------------------------------------------------- */}
       <div className="flex flex-1 flex-col overflow-hidden">
 
         {/* Top bar */}
@@ -429,7 +429,7 @@ export default function CalendarPage() {
 
         {/* Calendar body */}
         {loading
-          ? <div className="flex flex-1 items-center justify-center text-[13px] italic text-slate-400">Loading eventsâ€¦</div>
+          ? <div className="flex flex-1 items-center justify-center text-[13px] italic text-slate-400">Loading events...</div>
           : viewMode === "Month"
           ? <MonthView  cursor={cursor} events={events} courses={courses} enabled={enabled} onDayClick={d => { setCursor(d); setViewMode("Day"); }}/>
           : viewMode === "Week"

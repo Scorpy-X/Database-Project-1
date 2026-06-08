@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   BookOpen, Plus, ChevronDown, ChevronRight, ArrowLeft,
   File, Presentation, Link2, FileEdit, Calendar as CalIcon,
@@ -28,7 +28,7 @@ const itemIcons = {
   assignment: <FileEdit size={15} className="text-orange-500"/>,
 };
 
-// â”€â”€ Course Manager (detail view for a lecturer's course) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// -- Course Manager (detail view for a lecturer's course) ---------------------
 function CourseManager({ course, onBack }) {
   const courseCode = course.courseCode;
   const [tab, setTab] = useState("Content");
@@ -132,7 +132,7 @@ function CourseManager({ course, onBack }) {
 
   const handleGrade = async (subID, secItemID) => {
     const g = parseInt(gradeInputs[subID]);
-    if (isNaN(g) || g < 0 || g > 100) { setGradingMsg("Grade must be 0â€“100"); return; }
+    if (isNaN(g) || g < 0 || g > 100) { setGradingMsg("Grade must be 0-100"); return; }
     const r = await gradeSubmission(subID, g);
     setGradingMsg(r.status === 200 ? "Graded!" : r.error || "Error");
     if (r.status === 200 && secItemID) loadSubmissions(secItemID);
@@ -175,7 +175,7 @@ function CourseManager({ course, onBack }) {
         </div>
       </div>
 
-      {/* â”€â”€ CONTENT TAB â”€â”€ */}
+      {/* -- CONTENT TAB -- */}
       {tab === "Content" && (
         <div className="flex flex-col gap-4">
           {/* Add section */}
@@ -296,7 +296,7 @@ function CourseManager({ course, onBack }) {
         </div>
       )}
 
-      {/* â”€â”€ MEMBERS TAB â”€â”€ */}
+      {/* -- MEMBERS TAB -- */}
       {tab === "Members" && (
         <div className="flex flex-col gap-3">
           <div className="flex items-center justify-between">
@@ -328,7 +328,7 @@ function CourseManager({ course, onBack }) {
         </div>
       )}
 
-      {/* â”€â”€ CALENDAR TAB â”€â”€ */}
+      {/* -- CALENDAR TAB -- */}
       {tab === "Calendar" && (
         <div className="flex flex-col gap-4">
           <h2 className="text-[15px] font-extrabold text-slate-900">Course Calendar</h2>
@@ -360,7 +360,7 @@ function CourseManager({ course, onBack }) {
         </div>
       )}
 
-      {/* â”€â”€ FORUMS TAB â”€â”€ */}
+      {/* -- FORUMS TAB -- */}
       {tab === "Forums" && (
         selectedForum
           ? <ForumSection courseCode={course.courseCode}/>
@@ -390,7 +390,7 @@ function CourseManager({ course, onBack }) {
   );
 }
 
-// â”€â”€ Main Lecturer Dashboard â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// -- Main Lecturer Dashboard ---------------------------------------------------
 export default function LecturerDashboard() {
   const [activeTab, setActiveTab] = useState("My Courses");
   const [selectedCourse, setSelectedCourse] = useState(null);

@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Plus, Trash2, Users, BookOpen, AlertTriangle,
   GraduationCap, TrendingUp, RefreshCw, Search, UserPlus, ArrowLeft
@@ -24,7 +24,7 @@ import {
   reportMostEnrolled, reportTopStudents
 } from "@/api";
 
-// â”€â”€ Stat Card â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// -- Stat Card -----------------------------------------------------------------
 function StatCard({ icon: Icon, label, value, color = "bg-indigo-100", textColor = "text-indigo-600" }) {
   return (
     <div className="flex items-center gap-4 rounded-xl border border-slate-200 bg-white px-5 py-4">
@@ -33,13 +33,13 @@ function StatCard({ icon: Icon, label, value, color = "bg-indigo-100", textColor
       </div>
       <div>
         <p className="text-[12px] text-slate-400 font-semibold">{label}</p>
-        <p className="text-[22px] font-extrabold text-slate-900">{value ?? "â€”"}</p>
+        <p className="text-[22px] font-extrabold text-slate-900">{value ?? "-"}</p>
       </div>
     </div>
   );
 }
 
-// â”€â”€ Report Table â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// -- Report Table --------------------------------------------------------------
 function ReportTable({ title, columns, rows, loading }) {
   return (
     <div className="flex flex-col gap-2">
@@ -57,7 +57,7 @@ function ReportTable({ title, columns, rows, loading }) {
                 {i>0&&<Separator/>}
                 <div className="grid px-4 py-2.5 bg-white" style={{gridTemplateColumns:`repeat(${columns.length},1fr)`}}>
                   {columns.map(c=>(
-                    <span key={c.key} className="text-[12px] text-slate-700 font-medium">{row[c.key] ?? "â€”"}</span>
+                    <span key={c.key} className="text-[12px] text-slate-700 font-medium">{row[c.key] ?? "-"}</span>
                   ))}
                 </div>
               </React.Fragment>
@@ -68,7 +68,7 @@ function ReportTable({ title, columns, rows, loading }) {
   );
 }
 
-// â”€â”€ Main Admin Dashboard â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// -- Main Admin Dashboard ------------------------------------------------------
 function CourseRosterPanel({ course, members, loading, error, onBack }) {
   const lecturers = members.filter(m => m.memberRole?.toLowerCase() === "lecturer");
   const students = members.filter(m => m.memberRole?.toLowerCase() === "student");
@@ -155,7 +155,7 @@ export default function AdminDashboard() {
   const user = getStoredUser();
   const password = getStoredPassword();
 
-  // â”€â”€ Courses state â”€â”€
+  // -- Courses state --
   const [courses, setCourses] = useState([]);
   const [loadingCourses, setLoadingCourses] = useState(true);
   const [courseSearch, setCourseSearch] = useState("");
@@ -170,7 +170,7 @@ export default function AdminDashboard() {
   const [loadingMembers, setLoadingMembers] = useState(false);
   const [membersError, setMembersError] = useState(null);
 
-  // â”€â”€ Users state â”€â”€
+  // -- Users state --
   const [users, setUsers] = useState([]);
   const [loadingUsers, setLoadingUsers] = useState(false);
   const [userSearch, setUserSearch] = useState("");
@@ -179,7 +179,7 @@ export default function AdminDashboard() {
   const [regMsg, setRegMsg] = useState(null);
   const [regResult, setRegResult] = useState(null);
 
-  // â”€â”€ Reports state â”€â”€
+  // -- Reports state --
   const [reports, setReports] = useState({ c50:[], s5plus:[], l3:[], enrolled:[], top:[] });
   const [loadingReports, setLoadingReports] = useState(false);
 
@@ -202,7 +202,12 @@ export default function AdminDashboard() {
       reportMostEnrolled().catch(()=>[]),
       reportTopStudents().catch(()=>[]),
     ]);
-    setReports({ c50, s5plus, l3, enrolled, top });
+    const normalizedEnrolled = enrolled.map(row => ({
+      ...row,
+      courseName: row.courseName ?? row.CourseName,
+      enrollment_count: row.enrollment_count ?? row.totalStudents,
+    }));
+    setReports({ c50, s5plus, l3, enrolled: normalizedEnrolled, top });
     setLoadingReports(false);
   };
 
@@ -296,7 +301,7 @@ export default function AdminDashboard() {
 
   const renderContent = () => {
     switch (activeTab) {
-      // â”€â”€ DASHBOARD â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+      // -- DASHBOARD ----------------------------------------------------------
       case "Dashboard":
         return (
           <div className="flex flex-col gap-6">
@@ -306,9 +311,9 @@ export default function AdminDashboard() {
             </div>
             <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
               <StatCard icon={BookOpen} label="Total Courses" value={courses.length} color="bg-indigo-100" textColor="text-indigo-600"/>
-              <StatCard icon={Users} label="Total Users" value={users.length || "â€”"} color="bg-sky-100" textColor="text-sky-600"/>
-              <StatCard icon={GraduationCap} label="Students" value={students||"â€”"} color="bg-emerald-100" textColor="text-emerald-600"/>
-              <StatCard icon={BookOpen} label="Lecturers" value={lecturers||"â€”"} color="bg-purple-100" textColor="text-purple-600"/>
+              <StatCard icon={Users} label="Total Users" value={users.length || "-"} color="bg-sky-100" textColor="text-sky-600"/>
+              <StatCard icon={GraduationCap} label="Students" value={students||"-"} color="bg-emerald-100" textColor="text-emerald-600"/>
+              <StatCard icon={BookOpen} label="Lecturers" value={lecturers||"-"} color="bg-purple-100" textColor="text-purple-600"/>
             </div>
             <div className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 flex items-center gap-3">
               <AlertTriangle size={16} className="text-amber-600 shrink-0"/>
@@ -336,7 +341,7 @@ export default function AdminDashboard() {
           </div>
         );
 
-      // â”€â”€ COURSES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+      // -- COURSES ------------------------------------------------------------
       case "Courses":
         return (
           <div className="flex flex-col gap-6">
@@ -472,7 +477,7 @@ export default function AdminDashboard() {
           </div>
         );
 
-      // â”€â”€ USERS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+      // -- USERS --------------------------------------------------------------
       case "Users":
         return (
           <div className="flex flex-col gap-6">
@@ -553,7 +558,7 @@ export default function AdminDashboard() {
                             </div>
                             <div>
                               <p className="text-[12px] font-bold text-slate-800">{u.fname} {u.lname}</p>
-                              <p className="text-[10px] text-slate-400">{u.email} Â· ID: {u.userID}</p>
+                              <p className="text-[10px] text-slate-400">{u.email} - ID: {u.userID}</p>
                             </div>
                           </div>
                           <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold capitalize ${roleColor[u.accessLvl]||"bg-slate-100 text-slate-600"}`}>{u.accessLvl}</span>
@@ -571,7 +576,7 @@ export default function AdminDashboard() {
           </div>
         );
 
-      // â”€â”€ REPORTS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+      // -- REPORTS ------------------------------------------------------------
       case "Reports":
         return (
           <div className="flex flex-col gap-7">
@@ -584,10 +589,10 @@ export default function AdminDashboard() {
 
             {/* Count cards */}
             <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-              <StatCard icon={BookOpen} label="Courses â‰¥50 students" value={reports.c50.length} color="bg-indigo-100" textColor="text-indigo-600"/>
-              <StatCard icon={GraduationCap} label="Students â‰¥5 courses" value={reports.s5plus.length} color="bg-emerald-100" textColor="text-emerald-600"/>
-              <StatCard icon={Users} label="Lecturers â‰¥3 courses" value={reports.l3.length} color="bg-purple-100" textColor="text-purple-600"/>
-              <StatCard icon={TrendingUp} label="Most enrolled" value={reports.enrolled[0]?.courseName ?? "â€”"} color="bg-amber-100" textColor="text-amber-600"/>
+              <StatCard icon={BookOpen} label="Courses >= 50 students" value={reports.c50.length} color="bg-indigo-100" textColor="text-indigo-600"/>
+              <StatCard icon={GraduationCap} label="Students >= 5 courses" value={reports.s5plus.length} color="bg-emerald-100" textColor="text-emerald-600"/>
+              <StatCard icon={Users} label="Lecturers >= 3 courses" value={reports.l3.length} color="bg-purple-100" textColor="text-purple-600"/>
+              <StatCard icon={TrendingUp} label="Most enrolled" value={reports.enrolled[0]?.courseName ?? "-"} color="bg-amber-100" textColor="text-amber-600"/>
             </div>
 
             <ReportTable

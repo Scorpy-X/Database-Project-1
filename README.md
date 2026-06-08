@@ -4,19 +4,19 @@ A full-stack Virtual Learning Environment built with React, Flask, and MySQL. Th
 
 This repository is packaged for local demo and code review. It is not presented as a production LMS.
 
-## Screenshots To Add
+## Preview
 
-Screenshots are intentionally left as placeholders until they are manually captured and reviewed. Add them under `docs/screenshots/` using these exact filenames:
-
-| Screenshot | Purpose |
+| Login | Student course dashboard |
 | --- | --- |
-| `login.png` | Login page and project branding |
-| `student-dashboard.png` | Student course list and upcoming events |
-| `course-detail.png` | Course content, assignments, forums, grades, or roster |
-| `lecturer-dashboard.png` | Lecturer course management and grading workflow |
-| `admin-reports.png` | Admin reporting dashboard backed by SQL views |
+| ![Login screen](docs/screenshots/login.png) | ![Student course dashboard](docs/screenshots/student-dashboard.png) |
 
-Capture instructions live in `docs/screenshots/README.md`.
+| Course detail | Lecturer course dashboard |
+| --- | --- |
+| ![Course detail](docs/screenshots/course-detail.png) | ![Lecturer course dashboard](docs/screenshots/lecturer-dashboard.png) |
+
+| Admin reporting | Admin user management |
+| --- | --- |
+| ![Admin reporting](docs/screenshots/admin-reports.png) | ![Admin user management](docs/screenshots/admin-users.png) |
 
 ## What It Does
 

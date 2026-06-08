@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   LayoutGrid, List, ChevronDown, ChevronRight, ArrowLeft,
   File, Presentation, Link2, FileEdit, User, GraduationCap,
@@ -28,7 +28,7 @@ const itemIcons = {
   assignment: <FileEdit size={15} className="text-orange-500"/>,
 };
 
-// â”€â”€ Right sidebar (mini-cal + upcoming events) â€” used on My Courses & Course Detail â”€
+// -- Right sidebar (mini-cal + upcoming events) - used on My Courses & Course Detail -
 function RightSidebar({ events, loadingEvents }) {
   return (
     <div className="hidden xl:flex w-[260px] shrink-0 flex-col gap-5 border-l border-slate-200 bg-white px-5 py-6 box-border">
@@ -66,7 +66,7 @@ function RightSidebar({ events, loadingEvents }) {
   );
 }
 
-// â”€â”€ Course Detail â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// -- Course Detail --------------------------------------------------------------
 function CourseDetail({ course, events, loadingEvents }) {
   const user = getStoredUser();
   const userID = user?.userID;
@@ -141,7 +141,7 @@ function CourseDetail({ course, events, loadingEvents }) {
           <h1 className="text-[22px] font-extrabold text-slate-900 mb-3">
             {course.courseCode} : {course.courseName}
           </h1>
-          {/* Tabs â€” pill style matching design */}
+          {/* Tabs - pill style matching design */}
           <div className="flex gap-2">
             {["Course","Participants","Grades"].map(t => (
               <button key={t} onClick={() => setTab(t)}
@@ -154,7 +154,7 @@ function CourseDetail({ course, events, loadingEvents }) {
           </div>
         </div>
 
-        {/* â”€â”€ COURSE TAB â”€â”€ */}
+        {/* -- COURSE TAB -- */}
         {tab === "Course" && (
           <div className="flex flex-col gap-3">
             {/* Discussion Forum link row */}
@@ -242,7 +242,7 @@ function CourseDetail({ course, events, loadingEvents }) {
           </div>
         )}
 
-        {/* â”€â”€ FORUM TAB (inline) â”€â”€ */}
+        {/* -- FORUM TAB (inline) -- */}
         {tab === "Forum" && (
           <div className="flex flex-col gap-3">
             <Button variant="ghost" size="sm" onClick={() => setTab("Course")} className="w-fit gap-1 text-indigo-600">
@@ -252,7 +252,7 @@ function CourseDetail({ course, events, loadingEvents }) {
           </div>
         )}
 
-        {/* â”€â”€ PARTICIPANTS TAB â”€â”€ */}
+        {/* -- PARTICIPANTS TAB -- */}
         {tab === "Participants" && (
           <div className="flex flex-col gap-3">
             <div className="flex items-center justify-between">
@@ -284,7 +284,7 @@ function CourseDetail({ course, events, loadingEvents }) {
           </div>
         )}
 
-        {/* â”€â”€ GRADES TAB â”€â”€ */}
+        {/* -- GRADES TAB -- */}
         {tab === "Grades" && (
           loadingGrade ? <Skeleton className="h-16 w-full rounded-xl"/> :
           <div className="flex flex-col gap-2">
@@ -314,7 +314,7 @@ function CourseDetail({ course, events, loadingEvents }) {
   );
 }
 
-// â”€â”€ Main Student Dashboard â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// -- Main Student Dashboard -----------------------------------------------------
 export default function StudentDashboard() {
   const [activeTab, setActiveTab]     = useState("My Courses");
   const [selectedCourse, setSelectedCourse] = useState(null);
@@ -398,7 +398,7 @@ export default function StudentDashboard() {
     );
   }
 
-  // â”€â”€ My Courses & Course Search (image 1 layout) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // -- My Courses & Course Search (image 1 layout) ----------------------------
   return (
     <div className="flex min-h-screen bg-white">
       <Sidebar activeTab={activeTab} setActiveTab={t => { setActiveTab(t); setSelectedCourse(null); }}/>
@@ -428,7 +428,7 @@ export default function StudentDashboard() {
               </div>
             </div>
 
-            {/* Course list â€” matches design: left colour block + course code + name */}
+            {/* Course list - matches design: left colour block + course code + name */}
             {loadingCourses
               ? <div className="flex flex-col gap-3">{[1,2,3,4].map(i=><Skeleton key={i} className="h-[72px] rounded-xl"/>)}</div>
               : courses.length === 0
