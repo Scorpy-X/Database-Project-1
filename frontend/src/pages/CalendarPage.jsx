@@ -309,6 +309,7 @@ function DayView({ cursor, events, enabled }) {
 // â”€â”€ MAIN CALENDAR PAGE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export default function CalendarPage() {
   const user    = getStoredUser();
+  const userID  = user?.userID;
   const today   = new Date();
 
   const [viewMode, setViewMode]   = useState("Month"); // Day | Week | Month
@@ -319,10 +320,10 @@ export default function CalendarPage() {
   const [loading, setLoading]     = useState(true);
 
   useEffect(() => {
-    if (!user) return;
+    if (!userID) return;
     Promise.all([
-      getStudentCalendarEvents(user.userID).catch(() => []),
-      getStudentCourses(user.userID).catch(() => []),
+      getStudentCalendarEvents(userID).catch(() => []),
+      getStudentCourses(userID).catch(() => []),
     ]).then(([evts, crs]) => {
       const evArr  = Array.isArray(evts) ? evts : [];
       const crArr  = Array.isArray(crs)  ? crs  : [];
@@ -331,7 +332,7 @@ export default function CalendarPage() {
       setEnabled(new Set(crArr.map(c => c.courseCode)));
       setLoading(false);
     });
-  }, [user?.userID]);
+  }, [userID]);
 
   const toggleCourse = (code) => {
     setEnabled(prev => {

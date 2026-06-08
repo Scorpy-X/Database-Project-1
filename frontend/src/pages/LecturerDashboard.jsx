@@ -30,6 +30,7 @@ const itemIcons = {
 
 // â”€â”€ Course Manager (detail view for a lecturer's course) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function CourseManager({ course, onBack }) {
+  const courseCode = course.courseCode;
   const [tab, setTab] = useState("Content");
   const [content, setContent] = useState([]);
   const [openSecs, setOpenSecs] = useState([]);
@@ -67,37 +68,37 @@ function CourseManager({ course, onBack }) {
   const [forums, setForums] = useState([]);
   const [selectedForum, setSelectedForum] = useState(null);
 
-  const loadContent = () => {
+  const loadContent = React.useCallback(() => {
     setLoading(true);
-    getCourseContent(course.courseCode).then(d => {
+    getCourseContent(courseCode).then(d => {
       setContent(d); setOpenSecs(d.map(s => s.secID)); setLoading(false);
     }).catch(() => setLoading(false));
-  };
+  }, [courseCode]);
 
-  useEffect(() => { loadContent(); }, [course.courseCode]);
+  useEffect(() => { loadContent(); }, [loadContent]);
 
   useEffect(() => {
     if (tab !== "Members") return;
     setLoadingMembers(true);
-    getCourseMembers(course.courseCode).then(d => { setMembers(d); setLoadingMembers(false); }).catch(()=>setLoadingMembers(false));
-  }, [tab]);
+    getCourseMembers(courseCode).then(d => { setMembers(d); setLoadingMembers(false); }).catch(()=>setLoadingMembers(false));
+  }, [tab, courseCode]);
 
   useEffect(() => {
     if (tab !== "Calendar") return;
     setLoadingEvents(true);
-    getCourseCalendarEvents(course.courseCode).then(d => { setEvents(Array.isArray(d)?d:[]); setLoadingEvents(false); }).catch(()=>setLoadingEvents(false));
-  }, [tab]);
+    getCourseCalendarEvents(courseCode).then(d => { setEvents(Array.isArray(d)?d:[]); setLoadingEvents(false); }).catch(()=>setLoadingEvents(false));
+  }, [tab, courseCode]);
 
   useEffect(() => {
     if (tab !== "Forums") return;
-    getCourseForums(course.courseCode).then(d => setForums(Array.isArray(d)?d:[])).catch(()=>{});
-  }, [tab]);
+    getCourseForums(courseCode).then(d => setForums(Array.isArray(d)?d:[])).catch(()=>{});
+  }, [tab, courseCode]);
 
   const handleAddSection = async (e) => {
     e.preventDefault();
     if (!newSecName.trim()) return;
     setAddingSection(true);
-    const r = await createSection(course.courseCode, newSecName);
+    const r = await createSection(courseCode, newSecName);
     if (r.status === 201) { setSectionMsg("Section added!"); setNewSecName(""); loadContent(); }
     else setSectionMsg(r.error || "Error");
     setAddingSection(false);
@@ -141,8 +142,8 @@ function CourseManager({ course, onBack }) {
   const handleAddEvent = async (e) => {
     e.preventDefault();
     setAddingEvent(true);
-    const r = await createCalendarEvent(course.courseCode, calForm);
-    if (r.status === 201) { setCalMsg("Event created!"); setCalForm({eventDate:"",eventTitle:""}); setLoadingEvents(true); getCourseCalendarEvents(course.courseCode).then(d=>{setEvents(d);setLoadingEvents(false);}); }
+    const r = await createCalendarEvent(courseCode, calForm);
+    if (r.status === 201) { setCalMsg("Event created!"); setCalForm({eventDate:"",eventTitle:""}); setLoadingEvents(true); getCourseCalendarEvents(courseCode).then(d=>{setEvents(d);setLoadingEvents(false);}); }
     else setCalMsg(r.error || "Error");
     setAddingEvent(false);
     setTimeout(() => setCalMsg(null), 3000);
@@ -151,8 +152,8 @@ function CourseManager({ course, onBack }) {
   const handleAddForum = async (e) => {
     e.preventDefault();
     if (!forumName.trim()) return;
-    const r = await createForum(course.courseCode, forumName);
-    if (r.status === 201) { setForumName(""); getCourseForums(course.courseCode).then(d=>setForums(d)); }
+    const r = await createForum(courseCode, forumName);
+    if (r.status === 201) { setForumName(""); getCourseForums(courseCode).then(d=>setForums(d)); }
   };
 
   const toggleSec = id => setOpenSecs(p => p.includes(id) ? p.filter(x=>x!==id) : [...p,id]);
@@ -396,13 +397,14 @@ export default function LecturerDashboard() {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const user = getStoredUser();
+  const userID = user?.userID;
 
   useEffect(() => {
-    if (!user) return;
-    getLecturerCourses(user.userID)
+    if (!userID) return;
+    getLecturerCourses(userID)
       .then(d => { setCourses(Array.isArray(d)?d:[]); setLoading(false); })
       .catch(() => setLoading(false));
-  }, [user?.userID]);
+  }, [userID]);
 
   const renderContent = () => {
     if (activeTab === "My Courses" && selectedCourse)

@@ -69,6 +69,8 @@ function RightSidebar({ events, loadingEvents }) {
 // â”€â”€ Course Detail â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function CourseDetail({ course, events, loadingEvents }) {
   const user = getStoredUser();
+  const userID = user?.userID;
+  const courseCode = course.courseCode;
   const [tab, setTab]               = useState("Course");
   const [content, setContent]       = useState([]);
   const [openSecs, setOpenSecs]     = useState([]);
@@ -82,26 +84,26 @@ function CourseDetail({ course, events, loadingEvents }) {
   const [subStatusByItem, setSubStatusByItem]   = useState({});
 
   useEffect(() => {
-    getCourseContent(course.courseCode).then(d => {
+    getCourseContent(courseCode).then(d => {
       setContent(d); setOpenSecs(d.map(s => s.secID)); setLoadingContent(false);
     }).catch(() => setLoadingContent(false));
-  }, [course.courseCode]);
+  }, [courseCode]);
 
   useEffect(() => {
     if (tab !== "Participants") return;
     setLoadingMembers(true);
-    getCourseMembers(course.courseCode)
+    getCourseMembers(courseCode)
       .then(d => { setMembers(d); setLoadingMembers(false); })
       .catch(() => setLoadingMembers(false));
-  }, [tab]);
+  }, [tab, courseCode]);
 
   useEffect(() => {
-    if (tab !== "Grades" || !user) return;
+    if (tab !== "Grades" || !userID) return;
     setLoadingGrade(true);
-    getStudentCourseGrade(user.userID, course.courseCode)
+    getStudentCourseGrade(userID, courseCode)
       .then(d => { setGrade(d?.[0]?.grade ?? null); setLoadingGrade(false); })
       .catch(() => setLoadingGrade(false));
-  }, [tab]);
+  }, [tab, userID, courseCode]);
 
   const toggleSec = id =>
     setOpenSecs(p => p.includes(id) ? p.filter(x => x!==id) : [...p, id]);
@@ -327,19 +329,20 @@ export default function StudentDashboard() {
   const [grades, setGrades]           = useState([]);
 
   const user = getStoredUser();
+  const userID = user?.userID;
 
   useEffect(() => {
-    if (!user) return;
-    getStudentCourses(user.userID)
+    if (!userID) return;
+    getStudentCourses(userID)
       .then(d => { setCourses(Array.isArray(d)?d:[]); setLoadingCourses(false); })
       .catch(() => setLoadingCourses(false));
-    getStudentCalendarEvents(user.userID)
+    getStudentCalendarEvents(userID)
       .then(d => { setEvents(Array.isArray(d)?d:[]); setLoadingEvents(false); })
       .catch(() => setLoadingEvents(false));
-    getStudentGrades(user.userID)
+    getStudentGrades(userID)
       .then(d => setGrades(Array.isArray(d)?d:[]))
       .catch(() => {});
-  }, [user?.userID]);
+  }, [userID]);
 
   useEffect(() => {
     if (activeTab !== "Course Search") return;
